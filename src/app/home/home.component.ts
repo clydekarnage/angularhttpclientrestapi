@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from '../data.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { Product } from '../product';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   public firstPage() {
     this.products = [];
@@ -46,16 +47,19 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  products: any = [];
+  products: Product[] = [];
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private dataService: DataService) { }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
 
-    this.dataService.sendGetRequest().pipe(takeUntil(this.destroy$)).subscribe((res: HttpResponse<any>) => {
+    this.dataService.sendGetRequest().pipe(takeUntil(this.destroy$)).subscribe((res: HttpResponse<Product[]>) => {
       console.log(res);
       this.products = res.body;
     });
