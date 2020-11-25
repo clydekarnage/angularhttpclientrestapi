@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.dataService.setGetRequest().pipe(takeUntil(this.destroy$)).subscribe((data) => {
+    this.dataService.sendGetRequest().pipe(takeUntil(this.destroy$)).subscribe((data) => {
       console.log(data);
       this.products = data;
     });

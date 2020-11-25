@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
@@ -27,7 +27,9 @@ export class DataService {
   }
 
   // tslint:disable-next-line:typedef
-  public setGetRequest(){
+  public sendGetRequest(){
+    // Add safe, URL encoded_page parameter
+    const options = { params: new HttpParams({fromString: '_page=1&_limit=20'}) };
     return this.httpClient.get(this.REST_API_SERVER).pipe(retry(3), catchError(this.handleError));
   }
 }
